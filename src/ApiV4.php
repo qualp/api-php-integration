@@ -10,12 +10,12 @@ use Qualp\Api\Support\Vehicles;
 class ApiV4 extends Api
 {
     protected string $url = "http://api.qualp.com.br";
-    protected array $locations;
-    protected array $polyline;
-    protected string $vehicle;
-    protected string $vehicleAxis;
-    protected string $freightTableCategory;
-    protected string $freightTableLoad;
+    protected array $locations = [];
+    protected array $polyline = [];
+    protected string $vehicle = "";
+    protected string $vehicleAxis = "";
+    protected string $freightTableCategory = "";
+    protected string $freightTableLoad = "";
     protected bool $shouldCalculateReturn = false;
     protected int $maxDistanceFromLocationToRoute = 1000;
     protected bool $shouldShowPrivatePlacesCategories = false;
@@ -30,7 +30,7 @@ class ApiV4 extends Api
     protected bool $shouldShowLinkToQualP = false;
     protected bool $shouldShowTolls = true;
     protected bool $shouldShowPrivatePlaces = false;
-    protected string $format;
+    protected string $format = "json";
     protected string $router = "qualp";
 
     public function __construct(string $accessToken)

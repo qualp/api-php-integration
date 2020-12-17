@@ -1,0 +1,35 @@
+{
+    "name": "qualp/api-php-integration",
+    "description": "A package to integrate your PHP app with the QualP API",
+    "type": "library",
+    "keywords": [
+        "qualp",
+        "api",
+        "integracao"
+    ],
+    "homepage": "https://github.com/qualp/api-php-integration",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mateus Junges",
+            "email": "mateus@junges.dev"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "ext-json": "*"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Qualp\\Api\\": "src"
+        }
+    },
+    "support": {
+        "issues": "https://github.com/qualp/api-php-integration/issues",
+        "source": "https://github.com/qualp/api-php-integration/",
+        "docs": "http://docs.qualp.com.br",
+    }
+}

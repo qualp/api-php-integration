@@ -16,6 +16,7 @@ class ApiV4 extends Api
     protected string $vehicleAxis = "";
     protected string $freightTableCategory = "";
     protected string $freightTableLoad = "";
+    protected string $freightTableAxis = "all";
     protected bool $shouldCalculateReturn = false;
     protected int $maxDistanceFromLocationToRoute = 1000;
     protected bool $shouldShowPrivatePlacesCategories = false;
@@ -131,13 +132,13 @@ class ApiV4 extends Api
 
         $response = $this->client->request('POST', '/rotas/v4', [
             'headers' => [
-                'Content-Type' => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded',
                 'Access-Token' => $this->accessToken
             ],
-            'body' => $params,
+            'form_params' => $params,
         ]);
 
-        return $response->getBody();
+        return json_decode($response->getBody()->getContents());
     }
 
     /**
@@ -151,15 +152,15 @@ class ApiV4 extends Api
 
         $params = json_encode($this->buildParams());
 
-        $response = $this->client->request('GET', '/rotas/v4', [
+        $response = $this->client->get('/rotas/v4', [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Access-Token' => $this->accessToken
             ],
-            'json' => $params,
+            'query' => ["json" => $params],
         ]);
 
-        return $response->getBody();
+        return json_decode($response->getBody()->getContents());
     }
 
     private function buildParams() : array
@@ -168,11 +169,12 @@ class ApiV4 extends Api
             "config" => [
                 "vehicle" => [
                     "axis" => $this->vehicleAxis,
-                    "type" => $this->vehicleAxis,
+                    "type" => $this->vehicle,
                 ],
                 "freight_table" => [
                     "category" => $this->freightTableCategory,
                     "freight_load" => $this->freightTableLoad,
+                    "axis" => $this->freightTableAxis,
                 ],
                 "route" => [
                     "calculate_return" => $this->shouldCalculateReturn

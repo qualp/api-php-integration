@@ -98,10 +98,12 @@ class ApiV4 extends Api
     /**
      * @throws InvalidAxisException
      */
-    public function vehicleAxis(int $axis) : self
+    public function vehicleAxis(string $axis) : self
     {
-        if ($axis < 2 || $axis > 10) {
-            throw InvalidAxisException::invalidAxisCount();
+        if ($axis !== "all") {
+            if ((int)$axis < 2 || (int)$axis > 10) {
+                throw InvalidAxisException::invalidAxisCount();
+            }
         }
 
         $this->vehicleAxis = $axis;

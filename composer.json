@@ -16,8 +16,9 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
-        "ext-json": "*"
+        "php": "^7.4",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^7.2"
     },
     "config": {
         "sort-packages": true
@@ -30,6 +31,6 @@
     "support": {
         "issues": "https://github.com/qualp/api-php-integration/issues",
         "source": "https://github.com/qualp/api-php-integration/",
-        "docs": "http://docs.qualp.com.br",
+        "docs": "http://docs.qualp.com.br"
     }
 }

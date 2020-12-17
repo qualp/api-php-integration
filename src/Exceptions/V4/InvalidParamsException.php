@@ -10,4 +10,9 @@ class InvalidParamsException extends QualpApiException
     {
         return new static("Se você enviar um endereço com latitude e longitude, tenha certeza de enviar um array contendo as chaves `lat` e `lng`");
     }
+
+    public static function cantUsePolylineWithGetMethod() : self
+    {
+        return new static("Você não pode utilizar uma polilinha fazendo requests pelo método `GET`");
+    }
 }

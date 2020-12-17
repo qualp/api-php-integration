@@ -4,7 +4,7 @@ namespace Qualp\Api;
 
 use Qualp\Api\Support\Vehicles;
 
-class ApiClient
+class QualpApiClient
 {
     protected string $version;
     private string $accessToken;

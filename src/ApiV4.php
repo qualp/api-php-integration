@@ -54,6 +54,7 @@ class ApiV4 extends Api
         }
 
         $this->locations = $locations;
+        $this->polyline = [];
 
         return $this;
     }
@@ -82,6 +83,8 @@ class ApiV4 extends Api
         }
 
         $this->polyline = $polyline;
+        $this->locations = [];
+
         return $this;
     }
 
@@ -93,11 +96,9 @@ class ApiV4 extends Api
     }
 
     /**
-     * @param int $axis
-     * @return $this
      * @throws InvalidAxisException
      */
-    public function vehicleAxis(int $axis)
+    public function vehicleAxis(int $axis) : self
     {
         if ($axis < 2 || $axis > 10) {
             throw InvalidAxisException::invalidAxisCount();
@@ -108,16 +109,60 @@ class ApiV4 extends Api
         return $this;
     }
 
-    public function usingGoogleRouter()
+    /**
+     * @return $this
+     */
+    public function usingGoogleRouter() : self
     {
         $this->router = "google";
         return $this;
     }
 
+    /**
+     * Make a post request to the API.
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function post()
     {
+        $params = $this->buildParams();
+
+        $response = $this->client->request('POST', '/rotas/v4', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Access-Token' => $this->accessToken
+            ],
+            'body' => $params,
+        ]);
+
+        return $response->getBody();
+    }
+
+    /**
+     * @throws InvalidParamsException
+     */
+    public function get()
+    {
+        if (! empty($this->polyline)) {
+            throw InvalidParamsException::cantUsePolylineWithGetMethod();
+        }
+
+        $params = json_encode($this->buildParams());
+
+        $response = $this->client->request('GET', '/rotas/v4', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Access-Token' => $this->accessToken
+            ],
+            'json' => $params,
+        ]);
+
+        return $response->getBody();
+    }
+
+    private function buildParams() : array
+    {
         $params = [
-            "locations" => $this->locations,
             "config" => [
                 "vehicle" => [
                     "axis" => $this->vehicleAxis,
@@ -151,12 +196,12 @@ class ApiV4 extends Api
             ]
         ];
 
-        $request = $this->client->request('POST', '/rotas/v4', [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Access-Token' => $this->accessToken
-            ],
-            'body' => $params,
-        ]);
+        if (empty($this->locations)) {
+            $params['polyline'] = $this->polyline;
+        } else {
+            $params['locations'] = $this->locations;
+        }
+
+        return $params;
     }
 }

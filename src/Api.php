@@ -18,4 +18,15 @@ class Api
 
         $this->accessToken = $accessToken;
     }
+
+    public function buildResponse($response, string $format)
+    {
+        $response = $response->getBody()->getContents();
+
+        if ($format === 'json') {
+            return json_decode($response, true);
+        }
+
+        return $response;
+    }
 }

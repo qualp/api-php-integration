@@ -12,7 +12,7 @@ class ApiV4 extends Api
     protected string $url = "http://api.qualp.com.br";
     protected array $locations = [];
     protected array $polyline = [];
-    protected string $vehicle = "";
+    protected string $vehicleType = "";
     protected string $vehicleAxis = "";
     protected string $freightTableCategory = "";
     protected string $freightTableLoad = "";
@@ -89,9 +89,13 @@ class ApiV4 extends Api
         return $this;
     }
 
-    public function vehicle(Vehicles $vehicle) : self
+    /**
+     * @param Vehicles $vehicle
+     * @return $this
+     */
+    public function vehicleType(Vehicles $vehicle) : self
     {
-        $this->vehicle = $vehicle->type;
+        $this->vehicleType = $vehicle->type;
 
         return $this;
     }
@@ -109,6 +113,127 @@ class ApiV4 extends Api
 
         $this->vehicleAxis = $axis;
 
+        return $this;
+    }
+
+    /**
+     * @param string $category
+     * @return $this
+     */
+    public function freightTableCategory(string $category) : self
+    {
+        $this->freightTableCategory = $category;
+        return $this;
+    }
+
+    /**
+     * @param string $axis
+     * @return $this
+     */
+    public function freightTableAxis(string $axis) : self
+    {
+        $this->freightTableAxis = $axis;
+        return $this;
+    }
+
+    /**
+     * @param string $freightTableLoad
+     * @return $this
+     */
+    public function freightTableLoad(string $freightTableLoad) : self
+    {
+        $this->freightTableLoad = $freightTableLoad;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function calculateReturn() : self
+    {
+        $this->shouldCalculateReturn = true;
+        return $this;
+    }
+
+    /**
+     * @param int $distanceInMeters
+     * @return $this
+     */
+    public function maxDistanceFromPlacesToRoute(int $distanceInMeters) : self
+    {
+        $this->maxDistanceFromLocationToRoute = $distanceInMeters;
+        return $this;
+    }
+
+    public function showPrivatePlacesCategories() : self
+    {
+        $this->shouldShowPrivatePlacesCategories = true;
+        return $this;
+    }
+
+    public function showPrivatePlacesAreas() : self
+    {
+        $this->shouldShowPrivatePlacesAreas = true;
+        return $this;
+    }
+
+    public function showPrivatePlacesContacts() : self
+    {
+        $this->shouldShowPrivatePlacesContacts = true;
+        return $this;
+    }
+
+    public function showPrivatePlacesProducts() : self
+    {
+        $this->shouldShowPrivatePlacesProducts = true;
+        return $this;
+    }
+
+    public function showPrivatePlacesServices() : self
+    {
+        $this->shouldShowPrivatePlacesServices = true;
+        return $this;
+    }
+
+    public function hideTolls() : self
+    {
+        $this->shouldShowTolls = false;
+        return $this;
+    }
+
+    public function showPolyline() : self
+    {
+        $this->shouldShowPolyline = true;
+        return $this;
+    }
+
+    public function showSimplifiedPolyline() : self
+    {
+        $this->shouldShowSimplifiedPolyline = true;
+        return $this;
+    }
+
+    public function showPrivatePlaces() : self
+    {
+        $this->shouldShowPrivatePlaces = true;
+        return $this;
+    }
+
+    public function showStaticImage() : self
+    {
+        $this->shouldShowStaticImage = true;
+        return $this;
+    }
+
+    public function showFreightTable() : self
+    {
+        $this->shouldShowFreightTable = true;
+        return $this;
+    }
+
+    public function showLinkToQualP() : self
+    {
+        $this->shouldShowLinkToQualP = true;
         return $this;
     }
 
@@ -138,7 +263,7 @@ class ApiV4 extends Api
             'form_params' => $params,
         ]);
 
-        return json_decode($response->getBody()->getContents());
+        return $this->buildResponse($response, $this->format);
     }
 
     /**
@@ -160,7 +285,7 @@ class ApiV4 extends Api
             'query' => ["json" => $params],
         ]);
 
-        return json_decode($response->getBody()->getContents());
+        return $this->buildResponse($response, $this->format);
     }
 
     private function buildParams() : array
@@ -169,7 +294,7 @@ class ApiV4 extends Api
             "config" => [
                 "vehicle" => [
                     "axis" => $this->vehicleAxis,
-                    "type" => $this->vehicle,
+                    "type" => $this->vehicleType,
                 ],
                 "freight_table" => [
                     "category" => $this->freightTableCategory,
@@ -197,8 +322,7 @@ class ApiV4 extends Api
                 "freight_table" => $this->shouldShowFreightTable,
                 "link_to_qualp" => $this->shouldShowLinkToQualP,
                 "tolls" => $this->shouldShowTolls
-            ],
-            "format" => $this->format
+            ]
         ];
 
         if (empty($this->locations)) {

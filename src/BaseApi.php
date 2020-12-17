@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 class BaseApi
 {
     protected Client $client;
-    protected string $url;
+    protected string $url = "http://api.qualp.com.br";
     protected string $accessToken;
 
     public function __construct(string $accessToken)

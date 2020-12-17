@@ -2,6 +2,8 @@
 
 namespace Qualp\Api;
 
+use Qualp\Api\Exceptions\V3\InvalidParamsException;
+
 class ApiV3 extends BaseApi
 {
     protected string $origin = "";
@@ -50,8 +52,17 @@ class ApiV3 extends BaseApi
         return $this;
     }
 
+    /**
+     * @param int $axis
+     * @return $this
+     * @throws InvalidParamsException
+     */
     public function axis(int $axis) : self
     {
+        if ($axis < 1 || $axis > 15) {
+            throw InvalidParamsException::invalidAxisCount();
+        }
+
         $this->axis = $axis;
         return $this;
     }
@@ -74,8 +85,17 @@ class ApiV3 extends BaseApi
         return $this;
     }
 
+    /**
+     * @param string $freightTableCategory
+     * @return $this
+     * @throws InvalidParamsException
+     */
     public function freightTableCategory(string $freightTableCategory) : self
     {
+        if (! in_array(strtoupper($freightTableCategory), ['A', 'B', 'C', 'D'])) {
+            throw InvalidParamsException::invalidFreightTableCategory();
+        }
+
         $this->freightTableCategory = $freightTableCategory;
         return $this;
     }
@@ -115,7 +135,7 @@ class ApiV3 extends BaseApi
             "destinos" => $this->destinations,
             "categoria" => $this->category,
             "eixos" => $this->axis,
-            "calcular-volta" => $this->shouldCalculateReturn,
+            "calcular-volta" => $this->shouldCalculateReturn ? "sim" : "nao",
             "tabela-frete" => $this->shouldCalculateFreightTable ? "sim" : "nao",
             "categoria-tabela-frete" => $this->freightTableCategory,
             "rota-imagem" => $this->showStaticImage ? "sim" : "nao",

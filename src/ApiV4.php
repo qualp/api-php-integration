@@ -322,7 +322,8 @@ class ApiV4 extends Api
                 "freight_table" => $this->shouldShowFreightTable,
                 "link_to_qualp" => $this->shouldShowLinkToQualP,
                 "tolls" => $this->shouldShowTolls
-            ]
+            ],
+            "format" => $this->format
         ];
 
         if (empty($this->locations)) {

@@ -14,7 +14,7 @@ class QualpApiClient
         $this->accessToken = $accessToken;
     }
 
-    public static function make(string $accessToken) : self
+    public static function withAccessToken(string $accessToken) : self
     {
         return new static($accessToken);
     }

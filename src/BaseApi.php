@@ -4,7 +4,7 @@ namespace Qualp\Api;
 
 use GuzzleHttp\Client;
 
-class Api
+class BaseApi
 {
     protected Client $client;
     protected string $url;

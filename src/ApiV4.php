@@ -7,7 +7,7 @@ use Qualp\Api\Exceptions\V4\InvalidParamsException;
 use Qualp\Api\Exceptions\V4\InvalidPolylineException;
 use Qualp\Api\Support\Vehicles;
 
-class ApiV4 extends Api
+class ApiV4 extends BaseApi
 {
     protected string $url = "http://api.qualp.com.br";
     protected array $locations = [];
@@ -39,11 +39,6 @@ class ApiV4 extends Api
         parent::__construct($accessToken);
     }
 
-    /**
-     * @param array $locations
-     * @return $this
-     * @throws InvalidParamsException
-     */
     public function locations(array $locations) : self
     {
         foreach ($locations as $location) {
@@ -60,11 +55,6 @@ class ApiV4 extends Api
         return $this;
     }
 
-    /**
-     * @param array $polyline
-     * @return $this
-     * @throws InvalidPolylineException
-     */
     public function polyline(array $polyline) : self
     {
         if (! array_key_exists('precision', $polyline)) {
@@ -89,10 +79,6 @@ class ApiV4 extends Api
         return $this;
     }
 
-    /**
-     * @param Vehicles $vehicle
-     * @return $this
-     */
     public function vehicleType(Vehicles $vehicle) : self
     {
         $this->vehicleType = $vehicle->type;
@@ -100,9 +86,6 @@ class ApiV4 extends Api
         return $this;
     }
 
-    /**
-     * @throws InvalidAxisException
-     */
     public function vehicleAxis(string $axis) : self
     {
         if ($axis !== "all") {
@@ -116,49 +99,30 @@ class ApiV4 extends Api
         return $this;
     }
 
-    /**
-     * @param string $category
-     * @return $this
-     */
     public function freightTableCategory(string $category) : self
     {
         $this->freightTableCategory = $category;
         return $this;
     }
 
-    /**
-     * @param string $axis
-     * @return $this
-     */
     public function freightTableAxis(string $axis) : self
     {
         $this->freightTableAxis = $axis;
         return $this;
     }
 
-    /**
-     * @param string $freightTableLoad
-     * @return $this
-     */
     public function freightTableLoad(string $freightTableLoad) : self
     {
         $this->freightTableLoad = $freightTableLoad;
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function calculateReturn() : self
     {
         $this->shouldCalculateReturn = true;
         return $this;
     }
 
-    /**
-     * @param int $distanceInMeters
-     * @return $this
-     */
     public function maxDistanceFromPlacesToRoute(int $distanceInMeters) : self
     {
         $this->maxDistanceFromLocationToRoute = $distanceInMeters;

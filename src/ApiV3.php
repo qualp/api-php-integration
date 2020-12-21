@@ -38,12 +38,20 @@ class ApiV3 extends BaseApi
         return $this;
     }
 
+    /**
+     * @param string $origin
+     * @return $this
+     */
     public function origin(string $origin) : self
     {
         $this->origin = $origin;
         return $this;
     }
 
+    /**
+     * @param array $destinations
+     * @return $this
+     */
     public function destinations(array $destinations) : self
     {
         $this->destinations = implode('|', $destinations);
@@ -103,6 +111,10 @@ class ApiV3 extends BaseApi
         return $this;
     }
 
+    /**
+     * @param string $polyline
+     * @return $this
+     */
     public function polyline(string $polyline) : self
     {
         $this->origin = "";

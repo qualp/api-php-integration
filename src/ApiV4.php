@@ -5,6 +5,8 @@ namespace Qualp\Api;
 use Qualp\Api\Exceptions\V4\InvalidAxisException;
 use Qualp\Api\Exceptions\V4\InvalidParamsException;
 use Qualp\Api\Exceptions\V4\InvalidPolylineException;
+use Qualp\Api\Support\FreightTable\Category;
+use Qualp\Api\Support\FreightTable\Load;
 use Qualp\Api\Support\Vehicles;
 
 class ApiV4 extends BaseApi
@@ -99,9 +101,9 @@ class ApiV4 extends BaseApi
         return $this;
     }
 
-    public function freightTableCategory(string $category) : self
+    public function freightTableCategory(Category $category) : self
     {
-        $this->freightTableCategory = $category;
+        $this->freightTableCategory = $category->category;
         return $this;
     }
 
@@ -111,9 +113,10 @@ class ApiV4 extends BaseApi
         return $this;
     }
 
-    public function freightTableLoad(string $freightTableLoad) : self
+    public function freightTableLoad(Load $freightTableLoad) : self
     {
-        $this->freightTableLoad = $freightTableLoad;
+        $this->freightTableLoad = $freightTableLoad->load;
+
         return $this;
     }
 
@@ -207,6 +210,18 @@ class ApiV4 extends BaseApi
     public function usingGoogleRouter() : self
     {
         $this->router = "google";
+        return $this;
+    }
+
+    public function json() : self
+    {
+        $this->format = "json";
+        return $this;
+    }
+
+    public function xml() : self
+    {
+        $this->format = 'xml';
         return $this;
     }
 

@@ -15,4 +15,9 @@ class InvalidParamsException extends QualpApiException
     {
         return new static("Você deve escolher entre as categorias `A`, `B`, `C` e `D` para a tabela frete.");
     }
+
+    public static function invalidVehicleCategory()
+    {
+        return new static("Você deve escolher a categoria do veículo entre 'caminhao', 'carro', 'onibus' ou 'moto'");
+    }
 }

@@ -4,6 +4,7 @@ namespace Qualp\Api;
 
 use Qualp\Api\Exceptions\V3\InvalidParamsException;
 use Qualp\Api\Exceptions\V3\InvalidPolylineException;
+use Qualp\Api\Support\FreightTable\Category;
 
 class ApiV3 extends BaseApi
 {
@@ -49,8 +50,16 @@ class ApiV3 extends BaseApi
         return $this;
     }
 
+    /**
+     * @param string $category
+     * @return $this
+     * @throws InvalidParamsException
+     */
     public function vehicleCategory(string $category) : self
     {
+        if (! in_array(strtolower($category), ['caminhao', 'carro', 'onibus', 'moto'])) {
+            throw InvalidParamsException::invalidVehicleCategory();
+        }
         $this->category = $category;
         return $this;
     }
@@ -88,18 +97,9 @@ class ApiV3 extends BaseApi
         return $this;
     }
 
-    /**
-     * @param string $freightTableCategory
-     * @return $this
-     * @throws InvalidParamsException
-     */
-    public function freightTableCategory(string $freightTableCategory) : self
+    public function freightTableCategory(Category $freightTableCategory) : self
     {
-        if (! in_array(strtoupper($freightTableCategory), ['A', 'B', 'C', 'D'])) {
-            throw InvalidParamsException::invalidFreightTableCategory();
-        }
-
-        $this->freightTableCategory = $freightTableCategory;
+        $this->freightTableCategory = $freightTableCategory->category;
         return $this;
     }
 

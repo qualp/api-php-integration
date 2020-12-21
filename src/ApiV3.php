@@ -3,6 +3,7 @@
 namespace Qualp\Api;
 
 use Qualp\Api\Exceptions\V3\InvalidParamsException;
+use Qualp\Api\Exceptions\V3\InvalidPolylineException;
 
 class ApiV3 extends BaseApi
 {
@@ -15,6 +16,8 @@ class ApiV3 extends BaseApi
     protected string $freightTableCategory = "";
     protected bool $showStaticImage = false;
     protected string $format = "json";
+    protected int $polylinePrecision = 6;
+    protected string $polyline = "";
 
 
     public function __construct(string $accessToken)
@@ -46,7 +49,7 @@ class ApiV3 extends BaseApi
         return $this;
     }
 
-    public function category(string $category) : self
+    public function vehicleCategory(string $category) : self
     {
         $this->category = $category;
         return $this;
@@ -100,6 +103,30 @@ class ApiV3 extends BaseApi
         return $this;
     }
 
+    public function polyline(string $polyline) : self
+    {
+        $this->origin = "";
+        $this->destinations = "";
+        $this->polyline = $polyline;
+        return $this;
+    }
+
+    /**
+     * @param int $precision
+     * @return $this
+     * @throws InvalidPolylineException
+     */
+    public function polylinePrecision(int $precision) : self
+    {
+        if (! in_array($precision, [5, 6])) {
+            throw InvalidPolylineException::invalidPolylinePrecision();
+        }
+        $this->polylinePrecision = $precision;
+
+        return $this;
+    }
+
+
     /**
      * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -131,8 +158,6 @@ class ApiV3 extends BaseApi
     {
         $params = [
             "access-token" => $this->accessToken,
-            "origem" => $this->origin,
-            "destinos" => $this->destinations,
             "categoria" => $this->category,
             "eixos" => $this->axis,
             "calcular-volta" => $this->shouldCalculateReturn ? "sim" : "nao",
@@ -141,6 +166,14 @@ class ApiV3 extends BaseApi
             "rota-imagem" => $this->showStaticImage ? "sim" : "nao",
             "format" => $this->format
         ];
+
+        if (!empty($this->polyline)) {
+            $params['polilinha'] = $this->polyline;
+            $params['precisao-polilinha'] = $this->polylinePrecision;
+        } else {
+            $params["origem"] = $this->origin;
+            $params["destinos"] = $this->destinations;
+        }
 
         return $params;
     }

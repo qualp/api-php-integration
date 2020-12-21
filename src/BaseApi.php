@@ -19,7 +19,7 @@ class BaseApi
         $this->accessToken = $accessToken;
     }
 
-    public function buildResponse($response, string $format)
+    protected function buildResponse($response, string $format)
     {
         $response = $response->getBody()->getContents();
 

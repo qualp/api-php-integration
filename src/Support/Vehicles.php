@@ -16,22 +16,22 @@ class Vehicles
         $this->type = $type;
     }
 
-    public static function TRUCK() : self
+    public static function TRUCK(): self
     {
         return new static(self::TRUCK);
     }
 
-    public static function CAR() : self
+    public static function CAR(): self
     {
         return new static(self::CAR);
     }
 
-    public static function MOTORCYCLE() : self
+    public static function MOTORCYCLE(): self
     {
         return new static(self::MOTORCYCLE);
     }
 
-    public static function BUS() : self
+    public static function BUS(): self
     {
         return new static(self::BUS);
     }

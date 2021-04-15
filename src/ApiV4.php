@@ -11,14 +11,14 @@ use Qualp\Api\Support\Vehicles;
 
 class ApiV4 extends BaseApi
 {
-    protected string $url = "http://api.qualp.com.br";
+    protected string $url = 'http://api.qualp.com.br';
     protected array $locations = [];
     protected array $polyline = [];
-    protected string $vehicleType = "";
-    protected string $vehicleAxis = "";
-    protected string $freightTableCategory = "";
-    protected string $freightTableLoad = "";
-    protected string $freightTableAxis = "all";
+    protected string $vehicleType = '';
+    protected string $vehicleAxis = '';
+    protected string $freightTableCategory = '';
+    protected string $freightTableLoad = '';
+    protected string $freightTableAxis = 'all';
     protected bool $shouldCalculateReturn = false;
     protected int $maxDistanceFromLocationToRoute = 1000;
     protected bool $shouldShowPrivatePlacesCategories = false;
@@ -33,19 +33,19 @@ class ApiV4 extends BaseApi
     protected bool $shouldShowLinkToQualP = false;
     protected bool $shouldShowTolls = true;
     protected bool $shouldShowPrivatePlaces = false;
-    protected string $format = "json";
-    protected string $router = "qualp";
+    protected string $format = 'json';
+    protected string $router = 'qualp';
 
     public function __construct(string $accessToken)
     {
         parent::__construct($accessToken);
     }
 
-    public function locations(array $locations) : self
+    public function locations(array $locations): self
     {
         foreach ($locations as $location) {
             if (is_array($location)) {
-                if (! array_key_exists('lat', $location) || ! array_key_exists('lng', $location)) {
+                if (!array_key_exists('lat', $location) || !array_key_exists('lng', $location)) {
                     throw InvalidParamsException::invalidLatLngArray();
                 }
             }
@@ -57,21 +57,21 @@ class ApiV4 extends BaseApi
         return $this;
     }
 
-    public function polyline(array $polyline) : self
+    public function polyline(array $polyline): self
     {
-        if (! array_key_exists('precision', $polyline)) {
+        if (!array_key_exists('precision', $polyline)) {
             throw InvalidPolylineException::missingPolylinePrecision();
         }
 
-        if (! array_key_exists('string', $polyline)) {
+        if (!array_key_exists('string', $polyline)) {
             throw InvalidPolylineException::missingPolylineString();
         }
 
-        if (! is_string($polyline['string'])) {
+        if (!is_string($polyline['string'])) {
             throw InvalidPolylineException::invalidPolylineFormat();
         }
 
-        if (! in_array($polyline['precision'], [5, 6])) {
+        if (!in_array($polyline['precision'], [5, 6])) {
             throw InvalidPolylineException::invalidPolylinePrecision();
         }
 
@@ -81,17 +81,17 @@ class ApiV4 extends BaseApi
         return $this;
     }
 
-    public function vehicleType(Vehicles $vehicle) : self
+    public function vehicleType(Vehicles $vehicle): self
     {
         $this->vehicleType = $vehicle->type;
 
         return $this;
     }
 
-    public function vehicleAxis(string $axis) : self
+    public function vehicleAxis(string $axis): self
     {
-        if ($axis !== "all") {
-            if ((int)$axis < 2 || (int)$axis > 10) {
+        if ($axis !== 'all') {
+            if ((int) $axis < 2 || (int) $axis > 10) {
                 throw InvalidAxisException::invalidAxisCount();
             }
         }
@@ -101,127 +101,146 @@ class ApiV4 extends BaseApi
         return $this;
     }
 
-    public function freightTableCategory(Category $category) : self
+    public function freightTableCategory(Category $category): self
     {
         $this->freightTableCategory = $category->category;
+
         return $this;
     }
 
-    public function freightTableAxis(string $axis) : self
+    public function freightTableAxis(string $axis): self
     {
         $this->freightTableAxis = $axis;
+
         return $this;
     }
 
-    public function freightTableLoad(Load $freightTableLoad) : self
+    public function freightTableLoad(Load $freightTableLoad): self
     {
         $this->freightTableLoad = $freightTableLoad->load;
 
         return $this;
     }
 
-    public function calculateReturn() : self
+    public function calculateReturn(): self
     {
         $this->shouldCalculateReturn = true;
+
         return $this;
     }
 
-    public function maxDistanceFromPlacesToRoute(int $distanceInMeters) : self
+    public function maxDistanceFromPlacesToRoute(int $distanceInMeters): self
     {
         $this->maxDistanceFromLocationToRoute = $distanceInMeters;
+
         return $this;
     }
 
-    public function showPrivatePlacesCategories() : self
+    public function showPrivatePlacesCategories(): self
     {
         $this->shouldShowPrivatePlacesCategories = true;
+
         return $this;
     }
 
-    public function showPrivatePlacesAreas() : self
+    public function showPrivatePlacesAreas(): self
     {
         $this->shouldShowPrivatePlacesAreas = true;
+
         return $this;
     }
 
-    public function showPrivatePlacesContacts() : self
+    public function showPrivatePlacesContacts(): self
     {
         $this->shouldShowPrivatePlacesContacts = true;
+
         return $this;
     }
 
-    public function showPrivatePlacesProducts() : self
+    public function showPrivatePlacesProducts(): self
     {
         $this->shouldShowPrivatePlacesProducts = true;
+
         return $this;
     }
 
-    public function showPrivatePlacesServices() : self
+    public function showPrivatePlacesServices(): self
     {
         $this->shouldShowPrivatePlacesServices = true;
+
         return $this;
     }
 
-    public function hideTolls() : self
+    public function hideTolls(): self
     {
         $this->shouldShowTolls = false;
+
         return $this;
     }
 
-    public function showPolyline() : self
+    public function showPolyline(): self
     {
         $this->shouldShowPolyline = true;
+
         return $this;
     }
 
-    public function showSimplifiedPolyline() : self
+    public function showSimplifiedPolyline(): self
     {
         $this->shouldShowSimplifiedPolyline = true;
+
         return $this;
     }
 
-    public function showPrivatePlaces() : self
+    public function showPrivatePlaces(): self
     {
         $this->shouldShowPrivatePlaces = true;
+
         return $this;
     }
 
-    public function showStaticImage() : self
+    public function showStaticImage(): self
     {
         $this->shouldShowStaticImage = true;
+
         return $this;
     }
 
-    public function showFreightTable() : self
+    public function showFreightTable(): self
     {
         $this->shouldShowFreightTable = true;
+
         return $this;
     }
 
-    public function showLinkToQualP() : self
+    public function showLinkToQualP(): self
     {
         $this->shouldShowLinkToQualP = true;
+
         return $this;
     }
 
     /**
      * @return $this
      */
-    public function usingGoogleRouter() : self
+    public function usingGoogleRouter(): self
     {
-        $this->router = "google";
+        $this->router = 'google';
+
         return $this;
     }
 
-    public function json() : self
+    public function json(): self
     {
-        $this->format = "json";
+        $this->format = 'json';
+
         return $this;
     }
 
-    public function xml() : self
+    public function xml(): self
     {
         $this->format = 'xml';
+
         return $this;
     }
 
@@ -237,7 +256,7 @@ class ApiV4 extends BaseApi
         $response = $this->client->request('POST', '/rotas/v4', [
             'headers' => [
                 'Content-Type' => 'application/x-www-form-urlencoded',
-                'Access-Token' => $this->accessToken
+                'Access-Token' => $this->accessToken,
             ],
             'form_params' => $params,
         ]);
@@ -250,7 +269,7 @@ class ApiV4 extends BaseApi
      */
     public function get()
     {
-        if (! empty($this->polyline)) {
+        if (!empty($this->polyline)) {
             throw InvalidParamsException::cantUsePolylineWithGetMethod();
         }
 
@@ -259,50 +278,50 @@ class ApiV4 extends BaseApi
         $response = $this->client->get('/rotas/v4', [
             'headers' => [
                 'Content-Type' => 'application/json',
-                'Access-Token' => $this->accessToken
+                'Access-Token' => $this->accessToken,
             ],
-            'query' => ["json" => $params],
+            'query' => ['json' => $params],
         ]);
 
         return $this->buildResponse($response, $this->format);
     }
 
-    private function buildParams() : array
+    private function buildParams(): array
     {
         $params = [
-            "config" => [
-                "vehicle" => [
-                    "axis" => $this->vehicleAxis,
-                    "type" => $this->vehicleType,
+            'config' => [
+                'vehicle' => [
+                    'axis' => $this->vehicleAxis,
+                    'type' => $this->vehicleType,
                 ],
-                "freight_table" => [
-                    "category" => $this->freightTableCategory,
-                    "freight_load" => $this->freightTableLoad,
-                    "axis" => $this->freightTableAxis,
+                'freight_table' => [
+                    'category'     => $this->freightTableCategory,
+                    'freight_load' => $this->freightTableLoad,
+                    'axis'         => $this->freightTableAxis,
                 ],
-                "route" => [
-                    "calculate_return" => $this->shouldCalculateReturn
+                'route' => [
+                    'calculate_return' => $this->shouldCalculateReturn,
                 ],
-                "private_places" => [
-                    "max_distance_from_location_to_route" => $this->maxDistanceFromLocationToRoute,
-                    "categories" => $this->shouldShowPrivatePlacesCategories,
-                    "areas" => $this->shouldShowPrivatePlacesAreas,
-                    "contacts" => $this->shouldShowPrivatePlacesContacts,
-                    "products" => $this->shouldShowPrivatePlacesProducts,
-                    "services" => $this->shouldShowPrivatePlacesServices
+                'private_places' => [
+                    'max_distance_from_location_to_route' => $this->maxDistanceFromLocationToRoute,
+                    'categories'                          => $this->shouldShowPrivatePlacesCategories,
+                    'areas'                               => $this->shouldShowPrivatePlacesAreas,
+                    'contacts'                            => $this->shouldShowPrivatePlacesContacts,
+                    'products'                            => $this->shouldShowPrivatePlacesProducts,
+                    'services'                            => $this->shouldShowPrivatePlacesServices,
                 ],
-                "router" => $this->router,
+                'router' => $this->router,
             ],
-            "show" => [
-                "polyline" => $this->shouldShowPolyline,
-                "simplified_polyline" => $this->shouldShowSimplifiedPolyline,
-                "private_places" => $this->shouldShowPrivatePlaces,
-                "static_image" => $this->shouldShowStaticImage,
-                "freight_table" => $this->shouldShowFreightTable,
-                "link_to_qualp" => $this->shouldShowLinkToQualP,
-                "tolls" => $this->shouldShowTolls
+            'show' => [
+                'polyline'            => $this->shouldShowPolyline,
+                'simplified_polyline' => $this->shouldShowSimplifiedPolyline,
+                'private_places'      => $this->shouldShowPrivatePlaces,
+                'static_image'        => $this->shouldShowStaticImage,
+                'freight_table'       => $this->shouldShowFreightTable,
+                'link_to_qualp'       => $this->shouldShowLinkToQualP,
+                'tolls'               => $this->shouldShowTolls,
             ],
-            "format" => $this->format
+            'format' => $this->format,
         ];
 
         if (empty($this->locations)) {

@@ -8,12 +8,12 @@ class InvalidParamsException extends QualpApiException
 {
     public static function invalidAxisCount()
     {
-        return new static("Você deve informar um valor de eixos entre 1 e 15.");
+        return new static('Você deve informar um valor de eixos entre 1 e 15.');
     }
 
     public static function invalidFreightTableCategory()
     {
-        return new static("Você deve escolher entre as categorias `A`, `B`, `C` e `D` para a tabela frete.");
+        return new static('Você deve escolher entre as categorias `A`, `B`, `C` e `D` para a tabela frete.');
     }
 
     public static function invalidVehicleCategory()

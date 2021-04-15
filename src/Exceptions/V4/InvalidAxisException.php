@@ -8,6 +8,6 @@ class InvalidAxisException extends QualpApiException
 {
     public static function invalidAxisCount()
     {
-        return new static("Você precisa informar uma quantidade de eixos entre 2 e 10.");
+        return new static('Você precisa informar uma quantidade de eixos entre 2 e 10.');
     }
 }

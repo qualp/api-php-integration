@@ -8,117 +8,133 @@ use Qualp\Api\Support\FreightTable\Category;
 
 class ApiV3 extends BaseApi
 {
-    protected string $origin = "";
-    protected string $destinations = "";
-    protected string $category = "";
+    protected string $origin = '';
+    protected string $destinations = '';
+    protected string $category = '';
     protected int $axis = 0;
     protected bool $shouldCalculateReturn = false;
     protected bool $shouldCalculateFreightTable = false;
-    protected string $freightTableCategory = "";
+    protected string $freightTableCategory = '';
     protected bool $showStaticImage = false;
-    protected string $format = "json";
+    protected string $format = 'json';
     protected int $polylinePrecision = 6;
-    protected string $polyline = "";
-
+    protected string $polyline = '';
 
     public function __construct(string $accessToken)
     {
         parent::__construct($accessToken);
     }
 
-    public function json() : self
+    public function json(): self
     {
-        $this->format = "json";
+        $this->format = 'json';
+
         return $this;
     }
 
-    public function xml() : self
+    public function xml(): self
     {
-        $this->format = "xml";
+        $this->format = 'xml';
+
         return $this;
     }
 
-    public function origin(string $origin) : self
+    public function origin(string $origin): self
     {
         $this->origin = $origin;
+
         return $this;
     }
 
-    public function destinations(array $destinations) : self
+    public function destinations(array $destinations): self
     {
         $this->destinations = implode('|', $destinations);
+
         return $this;
     }
 
     /**
      * @param string $category
-     * @return $this
+     *
      * @throws InvalidParamsException
+     *
+     * @return $this
      */
-    public function vehicleCategory(string $category) : self
+    public function vehicleCategory(string $category): self
     {
-        if (! in_array(strtolower($category), ['caminhao', 'carro', 'onibus', 'moto'])) {
+        if (!in_array(strtolower($category), ['caminhao', 'carro', 'onibus', 'moto'])) {
             throw InvalidParamsException::invalidVehicleCategory();
         }
         $this->category = $category;
+
         return $this;
     }
 
     /**
      * @param int $axis
-     * @return $this
+     *
      * @throws InvalidParamsException
+     *
+     * @return $this
      */
-    public function axis(int $axis) : self
+    public function axis(int $axis): self
     {
         if ($axis < 1 || $axis > 15) {
             throw InvalidParamsException::invalidAxisCount();
         }
 
         $this->axis = $axis;
+
         return $this;
     }
 
-    public function calculateReturn() : self
+    public function calculateReturn(): self
     {
         $this->shouldCalculateReturn = true;
+
         return $this;
     }
 
-    public function showFreightTable() : self
+    public function showFreightTable(): self
     {
         $this->shouldCalculateFreightTable = true;
+
         return $this;
     }
 
-    public function showStaticImage() : self
+    public function showStaticImage(): self
     {
         $this->showStaticImage = true;
+
         return $this;
     }
 
-    public function freightTableCategory(Category $freightTableCategory) : self
+    public function freightTableCategory(Category $freightTableCategory): self
     {
         $this->freightTableCategory = $freightTableCategory->category;
+
         return $this;
     }
 
-    public function polyline(string $polyline) : self
+    public function polyline(string $polyline): self
     {
-        $this->origin = "";
-        $this->destinations = "";
+        $this->origin = '';
+        $this->destinations = '';
         $this->polyline = $polyline;
+
         return $this;
     }
 
     /**
      * @param int $precision
-     * @return $this
+     *
      * @throws InvalidPolylineException
+     *
+     * @return $this
      */
-    public function polylinePrecision(int $precision) : self
+    public function polylinePrecision(int $precision): self
     {
-        if (! in_array($precision, [5, 6])) {
+        if (!in_array($precision, [5, 6])) {
             throw InvalidPolylineException::invalidPolylinePrecision();
         }
         $this->polylinePrecision = $precision;
@@ -126,15 +142,15 @@ class ApiV3 extends BaseApi
         return $this;
     }
 
-
     /**
-     * @return mixed
      * @throws \GuzzleHttp\Exception\GuzzleException
+     *
+     * @return mixed
      */
     public function get()
     {
         $response = $this->client->get('/rotas/v3', [
-            'query' => $this->buildParams()
+            'query' => $this->buildParams(),
         ]);
 
         return $this->buildResponse($response, $this->format);
@@ -144,35 +160,35 @@ class ApiV3 extends BaseApi
     {
         $response = $this->client->post('/rotas/v3', [
             'headers' => [
-                'Content-Type' => 'application/x-www-urlencoded',
+                'Content-Type'   => 'application/x-www-urlencoded',
                 'Content-Length' => 0,
-                'Accept' => '*/*'
+                'Accept'         => '*/*',
             ],
-            'form_params' => $this->buildParams()
+            'form_params' => $this->buildParams(),
         ]);
 
         return $this->buildResponse($response, $this->format);
     }
 
-    private function buildParams() : array
+    private function buildParams(): array
     {
         $params = [
-            "access-token" => $this->accessToken,
-            "categoria" => $this->category,
-            "eixos" => $this->axis,
-            "calcular-volta" => $this->shouldCalculateReturn ? "sim" : "nao",
-            "tabela-frete" => $this->shouldCalculateFreightTable ? "sim" : "nao",
-            "categoria-tabela-frete" => $this->freightTableCategory,
-            "rota-imagem" => $this->showStaticImage ? "sim" : "nao",
-            "format" => $this->format
+            'access-token'           => $this->accessToken,
+            'categoria'              => $this->category,
+            'eixos'                  => $this->axis,
+            'calcular-volta'         => $this->shouldCalculateReturn ? 'sim' : 'nao',
+            'tabela-frete'           => $this->shouldCalculateFreightTable ? 'sim' : 'nao',
+            'categoria-tabela-frete' => $this->freightTableCategory,
+            'rota-imagem'            => $this->showStaticImage ? 'sim' : 'nao',
+            'format'                 => $this->format,
         ];
 
         if (!empty($this->polyline)) {
             $params['polilinha'] = $this->polyline;
             $params['precisao-polilinha'] = $this->polylinePrecision;
         } else {
-            $params["origem"] = $this->origin;
-            $params["destinos"] = $this->destinations;
+            $params['origem'] = $this->origin;
+            $params['destinos'] = $this->destinations;
         }
 
         return $params;

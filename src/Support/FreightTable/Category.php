@@ -10,7 +10,7 @@ class Category
     private const D = 'D';
     private const ALL = 'all';
 
-    public string $category = "";
+    public string $category = '';
 
     public function __construct(string $category)
     {

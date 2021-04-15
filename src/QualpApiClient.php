@@ -2,8 +2,6 @@
 
 namespace Qualp\Api;
 
-use Qualp\Api\Support\Vehicles;
-
 class QualpApiClient
 {
     protected string $version;
@@ -14,7 +12,7 @@ class QualpApiClient
         $this->accessToken = $accessToken;
     }
 
-    public static function withAccessToken(string $accessToken) : self
+    public static function withAccessToken(string $accessToken): self
     {
         return new static($accessToken);
     }
